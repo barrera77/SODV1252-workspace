@@ -11,11 +11,15 @@
             CreateResult(promptMsg);
         }
 
-        public static void CreateResult(string prompyMsg)
+        /// <summary>
+        /// Format output to print for user
+        /// </summary>
+        /// <param name="promptMsg"></param>
+        public static void CreateResult(string promptMsg)
         {
             string numOfTerms = "";
 
-            Console.Write(prompyMsg);
+            Console.Write(promptMsg);
 
             try
             {
@@ -37,21 +41,29 @@
         /// <param name="terms"></param>
         public static void CalculateFibonnaciSequence(int terms)
         {
-            long a = 0;
-            long b = 1;
-            long c = 0;
+            long firstTerm = 0;
+            long secondTerm = 1;
+            long sum = 0;
 
             //print the first and second term (0 & 1)
-            Console.WriteLine($"{a} (first term)");
-            Console.WriteLine($"{b} (second term)");
+            Console.WriteLine($"{firstTerm} (first term)");
+            Console.WriteLine($"{secondTerm} (second term)");
 
             for (int i = 2; i < terms; i++)
             {
-                c = a + b;
-                Console.WriteLine($"The sum of term {i} and term {c}", c);
-                a = b;
-                b = c;
-            }
+                sum = firstTerm + secondTerm;
+
+                if (sum < 0)
+                {
+                    Console.WriteLine("\nValue Exceeded data range!\n Please try again with a small number!");
+                    Console.ReadLine();
+                    break;
+                }
+
+                Console.WriteLine($"The sum of term {i - 1} and term {i} is {sum}");
+                firstTerm = secondTerm;
+                secondTerm = sum;
+            }            
         }
     }
 }
