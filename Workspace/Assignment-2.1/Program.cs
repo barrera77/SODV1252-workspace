@@ -25,7 +25,7 @@
 
             productCost = ValidateAmounts("Enter the cost of the product: ");
             productQty = ValidateQty("Enter the quantity of the product: ");
-            taxRate = ValidateAmounts("Enter the tax rate for example enter 0.07: ");
+            taxRate = ValidateAmounts("Enter the tax rate for example enter 0.07 for 7%: ");
 
             subTotal = productCost * (decimal)productQty;
             total = subTotal + (subTotal * taxRate);
@@ -37,9 +37,6 @@
             Console.WriteLine($"Tax Rate: {taxRate * 100}%");
             Console.WriteLine($"Total Price with Tax: ${total}");
             Console.ReadLine();
-
-
-
 
         }
 
@@ -57,7 +54,6 @@
                     if (number > 0)
                     {
                         isValidInput = true;
-
                     }
                     else
                     {
@@ -86,7 +82,6 @@
                     if (number > 0)
                     {
                         isValidInput = true;
-
                     }
                     else
                     {

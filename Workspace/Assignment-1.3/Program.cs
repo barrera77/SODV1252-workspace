@@ -51,7 +51,7 @@ namespace Assignment_1._3
                         return;
 
                     case "-":
-                        result = secondNumber - firstNumber;
+                        result = firstNumber - secondNumber;
 
                         Console.WriteLine($"Subtraction: {firstNumber} - {secondNumber} = {result}\n");
                         Console.Write("Do you want to continue (y/n)? ");
