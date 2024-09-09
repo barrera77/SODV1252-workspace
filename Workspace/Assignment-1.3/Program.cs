@@ -141,8 +141,6 @@ namespace Assignment_1._3
                 }               
             }
             return number;            
-        }
-
-       
+        }       
     }
 }

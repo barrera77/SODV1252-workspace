@@ -17,17 +17,24 @@ namespace Assignment_4._1
         /// <param name="promptMsg"></param>
         public static void CreateResult()
         {
-            List<int> gradesList = new List<int>();
-
+            //Display menu to initiate the program sequence
             DisplayMainMenu();
             HandleMainMenu();
-
         }
+
+        /// <summary>
+        /// Add the provided grades to a list
+        /// </summary>
+        /// <param name="grade"></param>
         public static void AddGrade(int grade)
         {                        
             gradesList.Add(grade);
         }
 
+        /// <summary>
+        /// Calculates the average of the provided grades and 
+        /// prints the output
+        /// </summary>
         public static void CalculateAverageGrade()
         {
             double averageGrade = 0;
@@ -46,12 +53,16 @@ namespace Assignment_4._1
             }
         }
 
+        /// <summary>
+        /// Finds the highest grade among the provided grades and 
+        /// prints the output
+        /// </summary>
         public static void FindHighestGrade()
         {
             int[] grades = gradesList.ToArray();
             int count = grades.Length;
 
-            if (gradesList.Count == 0)
+            if (count == 0)
             {
                 Console.Write("No grades available to find the higest grade. ");
                 Console.ReadLine();
@@ -65,12 +76,16 @@ namespace Assignment_4._1
             }            
         }
 
+        /// <summary>
+        /// Finds the lowest grade among the provided grades and 
+        /// prints the output
+        /// </summary>
         public static void FindLowestGrade()
         {
             int[] grades = gradesList.ToArray();
             int count = grades.Length;
 
-            if (gradesList.Count == 0)
+            if (count == 0)
             {
                 Console.Write("No grades available to find the higest grade. ");
                 Console.ReadLine();
@@ -79,11 +94,14 @@ namespace Assignment_4._1
             {
                 int lowestGrade = grades.Take(count).Min();
 
-                Console.Write($"Highest Grade: {lowestGrade}");
+                Console.Write($"Lowest Grade: {lowestGrade}");
                 Console.ReadLine();
             }
         }
 
+        /// <summary>
+        /// Prints the main menu
+        /// </summary>
         static void DisplayMainMenu()
         {
             string mainMenu = "Student Grading System:\n" +
@@ -97,6 +115,10 @@ namespace Assignment_4._1
             Console.WriteLine(mainMenu);
         }
 
+        /// <summary>
+        /// Handles the menu option selected by the user
+        /// and redirects to the appropiate action
+        /// </summary>
         static void HandleMainMenu()
         {
             string mainMenuOption;                     
@@ -146,7 +168,6 @@ namespace Assignment_4._1
             }
             while (mainMenuOption != "5");
         }
-
 
         /// <summary>
         /// Validates that the provided integer is within requested parameters
