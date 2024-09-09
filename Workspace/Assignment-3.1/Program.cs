@@ -9,15 +9,12 @@ namespace Assignment_3._1
             string promptMsg = "Please provide a paragraph of text: \n";
 
             CreateResult(promptMsg);
-
-
         }
 
         public static void CreateResult(string promptMsg)
         {
             string input = "";
-            bool isValidInput = false;
-          
+            bool isValidInput = false;          
 
             while (!isValidInput)
             {
@@ -96,8 +93,7 @@ namespace Assignment_3._1
 
             //Split the words in the text
             char[] chars = { ' ', '.', ',', ';', ':', '?', '\n', '\r' };
-            string[] words = input.Split(chars, StringSplitOptions.RemoveEmptyEntries);
-           
+            string[] words = input.Split(chars, StringSplitOptions.RemoveEmptyEntries);           
 
             foreach(var word in words)
             {

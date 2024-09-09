@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FibonacciCalculator", "..\F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment-3.1", "..\Assignment-3.1\Assignment-3.1.csproj", "{577BFB8D-DF19-466D-A107-4F7795ED83E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment-3.2", "..\Assignment-3.2\Assignment-3.2.csproj", "{DE0EA5B1-BCF0-4A61-AC72-22A344D4F657}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{577BFB8D-DF19-466D-A107-4F7795ED83E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{577BFB8D-DF19-466D-A107-4F7795ED83E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{577BFB8D-DF19-466D-A107-4F7795ED83E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE0EA5B1-BCF0-4A61-AC72-22A344D4F657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE0EA5B1-BCF0-4A61-AC72-22A344D4F657}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE0EA5B1-BCF0-4A61-AC72-22A344D4F657}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE0EA5B1-BCF0-4A61-AC72-22A344D4F657}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
