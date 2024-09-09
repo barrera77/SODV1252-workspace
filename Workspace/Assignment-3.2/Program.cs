@@ -11,10 +11,12 @@ namespace Assignment_3._2
             string promptMsg = "Enter the number of elements you wish to add to the array (between 1 and 30): ";
 
             CreateResult(promptMsg);
-
-
         }
 
+        /// <summary>
+        /// Compile operations and format output to print for the user
+        /// </summary>
+        /// <param name="promptMsg"></param>
         public static void CreateResult(string promptMsg)
         {
             int numOfElements = 0;
@@ -76,13 +78,14 @@ namespace Assignment_3._2
             //Return the mode of the array elements
             Array.Sort(reversedElementsList);
             mode = FindMode(reversedElementsList);
-            Console.WriteLine($"The mode of the array elements is: {mode.ToString("0.00")}");
-          
-
-            
-
+            Console.WriteLine($"The mode of the array elements is: {mode.ToString("0.00")}");     
         }
 
+        /// <summary>
+        /// Validates that the number of elements for the array is within parameters
+        /// </summary>
+        /// <param name="promptMsg"></param>
+        /// <returns>the validated num of elements for the array</returns>
         private static int ValidateInput(string promptMsg)
         {
             bool isValidNumOfElements = false;
@@ -118,6 +121,11 @@ namespace Assignment_3._2
             return num;           
         }
 
+        /// <summary>
+        /// Validates that the provided integer is within requested parameters
+        /// </summary>
+        /// <param name="prompt"></param>
+        /// <returns></returns>
         private static int ValidateInteger(string prompt)
         {
             bool isValidInteger = false;
@@ -153,7 +161,11 @@ namespace Assignment_3._2
             return num;
         }
 
-       
+       /// <summary>
+       /// Calculates the SD of the array elements
+       /// </summary>
+       /// <param name="elementsList"></param>
+       /// <returns>The standard deviation</returns>
         private static double CalculateStandardDeviation(int[] elementsList)
         {
             double standardDeviation = 0;
@@ -170,6 +182,11 @@ namespace Assignment_3._2
             return standardDeviation;
         }
 
+        /// <summary>
+        /// Calculate the median of the array elements
+        /// </summary>
+        /// <param name="elementList"></param>
+        /// <returns>The median calculation</returns>
         public static double CalculateMedian(int[] elementList)
         {
             double medianCalculation;
@@ -189,6 +206,11 @@ namespace Assignment_3._2
             return medianCalculation;
         }
 
+        /// <summary>
+        /// Find the mode of the array elements
+        /// </summary>
+        /// <param name="elementsList"></param>
+        /// <returns>the first max frequency of the elements</returns>
         public static int FindMode(int[] elementsList)
         {
             int highestFrequency = 0;
@@ -225,8 +247,5 @@ namespace Assignment_3._2
 
             return elementsList[0];
         }
-
-
-
     }
 }
