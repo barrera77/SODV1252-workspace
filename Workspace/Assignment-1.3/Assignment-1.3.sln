@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assignment-1.3", "Assignmen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assignment-2.1", "..\Assignment-2.1\Assignment-2.1.csproj", "{C20EE008-A1FF-42EA-B8EB-F6951EF1A4E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment-2.2", "..\Assignment-2.2\Assignment-2.2.csproj", "{F7A7AAAF-DC50-407F-80D7-C5AC8F5D3B83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assignment-2.2", "..\Assignment-2.2\Assignment-2.2.csproj", "{F7A7AAAF-DC50-407F-80D7-C5AC8F5D3B83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FibonacciCalculator", "..\FibonacciCalculator\FibonacciCalculator.csproj", "{192A266A-633A-4F41-9308-29719300AC0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FibonacciCalculator", "..\FibonacciCalculator\FibonacciCalculator.csproj", "{192A266A-633A-4F41-9308-29719300AC0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment-3.1", "..\Assignment-3.1\Assignment-3.1.csproj", "{577BFB8D-DF19-466D-A107-4F7795ED83E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{192A266A-633A-4F41-9308-29719300AC0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{192A266A-633A-4F41-9308-29719300AC0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{192A266A-633A-4F41-9308-29719300AC0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{577BFB8D-DF19-466D-A107-4F7795ED83E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{577BFB8D-DF19-466D-A107-4F7795ED83E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{577BFB8D-DF19-466D-A107-4F7795ED83E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{577BFB8D-DF19-466D-A107-4F7795ED83E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

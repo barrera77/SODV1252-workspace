@@ -50,13 +50,16 @@ namespace Assignment_2._2
                 }
                 else
                 {
-                    Console.WriteLine("Invalid input. Please enter a valid number.");
-                    
+                    Console.WriteLine("Invalid input. Please enter a valid number.");                    
                 }
             }
             return number;
         }
 
+        /// <summary>
+        /// Format output to print for user
+        /// </summary>
+        /// <param name="number"></param>
         private static void CreateResult(int number)
         {
             int sum = 0;
@@ -72,8 +75,6 @@ namespace Assignment_2._2
                 reversedString = ReverseString(promptMsg);
                 Console.WriteLine($"Reversed String: {reversedString}");
                 Console.ReadLine();
-
-
             }
 
             switch (number)
@@ -196,9 +197,7 @@ namespace Assignment_2._2
                     reversedString = ReverseString(promptMsg);
                     Console.WriteLine($"Reversed String: {reversedString}");
                     Console.ReadLine();
-                    return;
-
-               
+                    return;               
             }
         }
 
@@ -260,7 +259,5 @@ namespace Assignment_2._2
 
             return reversedInput;
         }
-
-
     }
 }
