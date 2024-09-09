@@ -1,0 +1,15 @@
+C:\Users\barre\OneDrive - NAIT\Documents\School\Bow Valley\SODV1252-Programming in C#\Workspace\Assignment-2.1\bin\Debug\net8.0\Assignment-2.1.exe
+C:\Users\barre\OneDrive - NAIT\Documents\School\Bow Valley\SODV1252-Programming in C#\Workspace\Assignment-2.1\bin\Debug\net8.0\Assignment-2.1.deps.json
+C:\Users\barre\OneDrive - NAIT\Documents\School\Bow Valley\SODV1252-Programming in C#\Workspace\Assignment-2.1\bin\Debug\net8.0\Assignment-2.1.runtimeconfig.json
+C:\Users\barre\OneDrive - NAIT\Documents\School\Bow Valley\SODV1252-Programming in C#\Workspace\Assignment-2.1\bin\Debug\net8.0\Assignment-2.1.dll
+C:\Users\barre\OneDrive - NAIT\Documents\School\Bow Valley\SODV1252-Programming in C#\Workspace\Assignment-2.1\bin\Debug\net8.0\Assignment-2.1.pdb
+C:\Users\barre\OneDrive - NAIT\Documents\School\Bow Valley\SODV1252-Programming in C#\Workspace\Assignment-2.1\obj\Debug\net8.0\Assignment-2.1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\barre\OneDrive - NAIT\Documents\School\Bow Valley\SODV1252-Programming in C#\Workspace\Assignment-2.1\obj\Debug\net8.0\Assignment-2.1.AssemblyInfoInputs.cache
+C:\Users\barre\OneDrive - NAIT\Documents\School\Bow Valley\SODV1252-Programming in C#\Workspace\Assignment-2.1\obj\Debug\net8.0\Assignment-2.1.AssemblyInfo.cs
+C:\Users\barre\OneDrive - NAIT\Documents\School\Bow Valley\SODV1252-Programming in C#\Workspace\Assignment-2.1\obj\Debug\net8.0\Assignment-2.1.csproj.CoreCompileInputs.cache
+C:\Users\barre\OneDrive - NAIT\Documents\School\Bow Valley\SODV1252-Programming in C#\Workspace\Assignment-2.1\obj\Debug\net8.0\Assignment-2.1.sourcelink.json
+C:\Users\barre\OneDrive - NAIT\Documents\School\Bow Valley\SODV1252-Programming in C#\Workspace\Assignment-2.1\obj\Debug\net8.0\Assignment-2.1.dll
+C:\Users\barre\OneDrive - NAIT\Documents\School\Bow Valley\SODV1252-Programming in C#\Workspace\Assignment-2.1\obj\Debug\net8.0\refint\Assignment-2.1.dll
+C:\Users\barre\OneDrive - NAIT\Documents\School\Bow Valley\SODV1252-Programming in C#\Workspace\Assignment-2.1\obj\Debug\net8.0\Assignment-2.1.pdb
+C:\Users\barre\OneDrive - NAIT\Documents\School\Bow Valley\SODV1252-Programming in C#\Workspace\Assignment-2.1\obj\Debug\net8.0\Assignment-2.1.genruntimeconfig.cache
+C:\Users\barre\OneDrive - NAIT\Documents\School\Bow Valley\SODV1252-Programming in C#\Workspace\Assignment-2.1\obj\Debug\net8.0\ref\Assignment-2.1.dll

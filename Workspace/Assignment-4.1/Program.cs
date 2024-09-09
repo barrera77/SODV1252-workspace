@@ -4,6 +4,8 @@ namespace Assignment_4._1
 {
     internal class Program
     {
+        //Grades List
+        private static List<int> gradesList = new List<int>();
         static void Main(string[] args)
         {
             CreateResult();
@@ -15,41 +17,76 @@ namespace Assignment_4._1
         /// <param name="promptMsg"></param>
         public static void CreateResult()
         {
+            List<int> gradesList = new List<int>();
+
             DisplayMainMenu();
             HandleMainMenu();
 
-            //TODO:Revise HandleMainMenu(), the program ends right away 
-
         }
-        public static void AddGrade()
-        {
-            string input = "";
-            string promptMessage = "Enter the grade/grades (separated by a space) to add: ";
-            List<int> gradesList = new List<int>();
-
-            gradesList = ValidateGrades(promptMessage);
-
-
+        public static void AddGrade(int grade)
+        {                        
+            gradesList.Add(grade);
         }
 
-        public static void CalculateAverageGrade(List<int> gradesList)
+        public static void CalculateAverageGrade()
         {
+            double averageGrade = 0;
+            int[] grades = gradesList.ToArray();
 
+            if(gradesList.Count == 0)
+            {
+                Console.Write("No grades available to calculate the average. ");
+                Console.ReadLine();
+            }
+            else
+            {
+                averageGrade = (double)grades.Average();
+                Console.Write($"Average Grade: {averageGrade.ToString("0.000")}" );
+                Console.ReadLine();
+            }
         }
 
-        public static void FindHighestGrade(List<int> gradesList)
+        public static void FindHighestGrade()
         {
+            int[] grades = gradesList.ToArray();
+            int count = grades.Length;
 
+            if (gradesList.Count == 0)
+            {
+                Console.Write("No grades available to find the higest grade. ");
+                Console.ReadLine();
+            }
+            else
+            {
+                int highestGrade = grades.Take(count).Max();
+
+                Console.Write($"Highest Grade: {highestGrade}");
+                Console.ReadLine();
+            }            
         }
 
-        public static void FindLowestGrade(List<int> gradesList)
+        public static void FindLowestGrade()
         {
+            int[] grades = gradesList.ToArray();
+            int count = grades.Length;
 
+            if (gradesList.Count == 0)
+            {
+                Console.Write("No grades available to find the higest grade. ");
+                Console.ReadLine();
+            }
+            else
+            {
+                int lowestGrade = grades.Take(count).Min();
+
+                Console.Write($"Highest Grade: {lowestGrade}");
+                Console.ReadLine();
+            }
         }
 
         static void DisplayMainMenu()
         {
-            string mainMenu = "--- Student Grading System ---\n" +
+            string mainMenu = "Student Grading System:\n" +
             "\n1. Add Grade(s)\n" +
             "2. Calculate Average Grade\n" +
             "3. Find Highest Grade\n" +
@@ -62,20 +99,52 @@ namespace Assignment_4._1
 
         static void HandleMainMenu()
         {
-            DisplayMainMenu();
-            string mainMenuOption = "";
-            Console.Write("\nPlease enter your choice: ");
+            string mainMenuOption;                     
 
-            switch (mainMenuOption)
+            do
             {
-                case "1":
-                    AddGrade();
-                    break;
-                
-                default:
-                   
-                    break;
+                DisplayMainMenu();
+
+                Console.Write("\nPlease enter your choice: ");
+                mainMenuOption = Console.ReadLine();
+
+                switch (mainMenuOption)
+                {
+                    case "1":
+                        string promptMsg = "Enter the grade/grades (separated by space) to add: ";
+                        ValidateGrades(promptMsg);
+                        Console.WriteLine("Please hit enter to continue. . .");
+                        Console.ReadLine();
+
+                        ////Reset the menu
+                        //DisplayMainMenu();
+                        //Console.Write("\nPlease enter your choice: ");
+                        //mainMenuOption = Console.ReadLine();
+                        break;
+
+                    case "2":
+                        CalculateAverageGrade();
+                        break;
+
+                    case "3":
+                        FindHighestGrade();
+                        break;
+
+                    case "4":
+                        FindLowestGrade();
+                        break;
+
+                    case "5":
+                        Console.WriteLine("Exiting the system. Have a great day!");
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid option. Please try again.");
+                        Console.ReadLine();
+                        break;
+                }
             }
+            while (mainMenuOption != "5");
         }
 
 
@@ -84,14 +153,12 @@ namespace Assignment_4._1
         /// </summary>
         /// <param name="prompt"></param>
         /// <returns></returns>
-        private static List<int> ValidateGrades(string prompt)
+        private static void ValidateGrades(string prompt)
         {
             bool isValidInteger = false;
 
-            string input = "";
-            int numericalGrade = 0;
-
-            List<int> gradesList = new List<int>(); 
+            string input;
+            int numericalGrade;
 
             Console.Write(prompt);
 
@@ -99,24 +166,16 @@ namespace Assignment_4._1
             {
                 input = Console.ReadLine();
 
-                char[] chars = { ' ' };
+                char[] chars = [ ' ' ];
                 string[] grades = input.Split(chars, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach(string grade in grades)
-                {
-                    //Regex to allow only positive int values
-                    string pattern = @"^\d+$";
-                    Regex regex = new Regex(pattern);
-
-                    input = input.Trim();
-
-                    if(regex.IsMatch(grade))
-                    {
-                        numericalGrade = int.Parse(grade);  
+                {            
+                    if(int.TryParse(grade, out numericalGrade))
+                    {                          
                         if (numericalGrade > 0 && numericalGrade <= 100)
                         {
-                            gradesList.Add(int.Parse(grade));
-                            isValidInteger = true;
+                            AddGrade(numericalGrade);                                                       
                         }
                         else
                         {
@@ -128,9 +187,10 @@ namespace Assignment_4._1
                         Console.Write("Invalid input. Please enter a valid number: ");
                     }
                 }
-            }
 
-            return gradesList;
+                isValidInteger = true;
+            }
+            Console.WriteLine("Grade(s) added succesfully.");
         }
 
     }
