@@ -10,13 +10,16 @@ namespace Assignment_6._1
         static void Main(string[] args)
         {
             List<Student> students = new List<Student>();
-            while (true)
+
+            int choice = 0;
+
+            do
             {
                 Console.WriteLine("1. Add a student\n2. Assign grade\n3. Retrieve student info\n4. Exit");
 
                 try
                 {
-                    int choice = int.Parse(Console.ReadLine());
+                    choice = ValidateInt(Console.ReadLine());
 
                     switch (choice)
                     {
@@ -26,15 +29,11 @@ namespace Assignment_6._1
 
                             ValidateName(name);
 
-                               
-                          
-                            
-                                Console.Write("Enter student age: ");
-                                int age = int.Parse(Console.ReadLine());
-                                students.Add(new Student { Name = name, Age = age });
-                            
+                            Console.Write("Enter student age: ");
+                            int age = int.Parse(Console.ReadLine());
+                            students.Add(new Student { Name = name, Age = age });
 
-                            
+
                             break;
                         case 2:
                             Console.Write("Enter student index: ");
@@ -56,16 +55,18 @@ namespace Assignment_6._1
                     }
 
                 }
-                catch (FormatException ex)
+                catch (FormatException e)
                 {
-                    Console.WriteLine($"Format error: {ex.Message}");
+                    Console.WriteLine(e.Message);
 
                     Console.WriteLine("Instructed executed. Press Enter to continue... ");
                     Console.ReadLine();
                 }
                
-                
+
+
             }
+            while (choice != 4);
         }
 
         static void ValidateName(string name)
@@ -86,6 +87,36 @@ namespace Assignment_6._1
                 throw new FormatException("Name must start with an uppercase letter.");
             }
         }
+
+        static int ValidateInt(string input)
+        {
+            if(!int.TryParse(input, out int validInt))
+            {
+                throw new FormatException($"Invalid Input. Please enter a number");
+            }
+
+            return validInt;
+        }
+
+        static double ValidateDoule(string input)
+        {
+            if (!double.TryParse(input, out double validDouble))
+            {
+                throw new FormatException($"Invalid Input. Please enter a number");
+            }
+
+            return validDouble;
+        }
+
+
+
+
+        public class InvalidDataException : Exception
+        {
+            public InvalidDataException(string message) : base(message)
+            {
+            }
+        }
     }
 
     class Student
@@ -96,7 +127,7 @@ namespace Assignment_6._1
     }
 
 
-
+    
 
 
 
