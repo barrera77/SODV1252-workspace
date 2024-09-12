@@ -78,7 +78,7 @@ namespace Assignment_6._1
         {
             if (!int.TryParse(input, out int validChoice))
             {
-                throw new InvalidDataException($"Invalid Input. Please enter a number");
+                throw new InvalidDataException("Invalid Input. Please enter a number");
             }
 
             return validChoice;
