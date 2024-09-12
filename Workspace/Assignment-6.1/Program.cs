@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text.RegularExpressions;
-
-
+﻿
 namespace Assignment_6._1
 {
     internal class Program
@@ -67,6 +61,7 @@ namespace Assignment_6._1
             while (choice != 4);
         }
 
+        #region Helper Methods
         /// <summary>
         /// Validates the menu choice, if valid returns the number
         /// otherwise, throw a custom Exception
@@ -118,32 +113,36 @@ namespace Assignment_6._1
             return name;
         }
 
-
+        /// <summary>
+        /// Validates that the age is according to specified
+        /// conditions
+        /// </summary>
+        /// <returns>Validated Age</returns>
         static int ValidateAge()
         {
             bool isValidAge = false;
             int validAge = 0;
 
-            while(!isValidAge)
+            while (!isValidAge)
             {
                 Console.Write("Enter student age: ");
-                if(!int.TryParse(Console.ReadLine(), out validAge))
+                if (!int.TryParse(Console.ReadLine(), out validAge))
                 {
                     Console.WriteLine("Age must be a number.");
                 }
                 else
                 {
-                    if(validAge >= 0 && validAge < 18)
+                    if (validAge >= 0 && validAge < 18)
                     {
                         Console.WriteLine("Validation error: Age must be at least 18.");
                     }
-                    else if(validAge < 0)
+                    else if (validAge < 0)
                     {
                         Console.WriteLine("Validation error: Age cannot be negative.");
                     }
-                    else if(validAge > 65)
+                    else if (validAge > 65)
                     {
-                        Console.WriteLine("Validation error: Age canot be more than 65.");
+                        Console.WriteLine("Validation error: Age cannot be more than 65.");
                     }
                     else
                     {
@@ -151,22 +150,29 @@ namespace Assignment_6._1
                         Console.ReadLine();
 
                         isValidAge = true;
-                    }                    
+                    }
                 }
             }
             return validAge;
         }
 
+        /// <summary>
+        /// Finds the index within the students list
+        /// for the provided student
+        /// </summary>
+        /// <param name="studentsList"></param>
+        /// <returns>student index</returns>
+        /// <exception cref="InvalidDataException"></exception>
         static int FindStudentIndex(List<Student> studentsList)
         {
             int studentIndex = 0;
             string studentName = "";
-            
+
             studentName = ValidateName();
 
             Student student = studentsList.FirstOrDefault(s => s.Name == studentName);
-            
-            if(student == null)
+
+            if (student == null)
             {
                 throw new InvalidDataException($"Student {studentName} not found");
             }
@@ -178,13 +184,18 @@ namespace Assignment_6._1
             return studentIndex;
         }
 
+        /// <summary>
+        /// Verifies that the provided grade is within the
+        /// especified conditions
+        /// </summary>
+        /// <returns>Validated grade</returns>
         static double ValidateGrade()
         {
             bool isValidGrade = false;
 
             double validGrade = 0;
 
-            while(!isValidGrade)
+            while (!isValidGrade)
             {
                 Console.Write("Enter student grade: ");
 
@@ -206,31 +217,27 @@ namespace Assignment_6._1
                         isValidGrade = true;
                     }
                 }
-            }            
+            }
             return validGrade;
         }
 
+        #endregion
 
+    }
 
-
-        public class InvalidDataException : Exception
+    //helper class for custom exceptions
+    public class InvalidDataException : Exception
+    {
+        public InvalidDataException(string message) : base(message)
         {
-            public InvalidDataException(string message) : base(message)
-            {
-            }
         }
     }
 
+    //Student class
     class Student
     {
         public string Name { get; set; }
         public int Age { get; set; }
         public double Grade { get; set; }
     }
-
-
-    
-
-
-
 }
