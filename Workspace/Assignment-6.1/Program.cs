@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
+
 
 namespace Assignment_6._1
 {
@@ -19,33 +21,34 @@ namespace Assignment_6._1
 
                 try
                 {
-                    choice = ValidateInt(Console.ReadLine());
+                    choice = ValidateMenuChoice(Console.ReadLine());
 
                     switch (choice)
                     {
                         case 1:
-                            Console.Write("Enter student name: ");
-                            string name = Console.ReadLine();
+                            string name = "";
+                            int age = 0;
+                            name = ValidateName();
 
-                            ValidateName(name);
-
-                            Console.Write("Enter student age: ");
-                            int age = int.Parse(Console.ReadLine());
+                            age = ValidateAge();
                             students.Add(new Student { Name = name, Age = age });
-
 
                             break;
                         case 2:
-                            Console.Write("Enter student index: ");
-                            int index = int.Parse(Console.ReadLine());
-                            Console.Write("Enter student grade: ");
-                            double grade = double.Parse(Console.ReadLine());
+                            int index;
+                            double grade;
+
+                            index = FindStudentIndex(students);                            
+                            grade = ValidateGrade();
+
                             students[index].Grade = grade;
                             break;
-                        case 3:
-                            Console.Write("Enter student index: ");
-                            index = int.Parse(Console.ReadLine());
+                        case 3:                           
+                            index = FindStudentIndex(students);
+
                             Console.WriteLine($"Name: {students[index].Name}, Age: {students[index].Age}, Grade: {students[index].Grade}");
+                            Console.WriteLine("Instructed executed. Press Enter to continue... ");
+                            Console.ReadLine();
                             break;
                         case 4:
                             return;
@@ -53,59 +56,158 @@ namespace Assignment_6._1
                             Console.WriteLine("Invalid choice. Try again.\n");
                             break;
                     }
-
-                }
-                catch (FormatException e)
+                }               
+                catch (InvalidDataException e)
                 {
                     Console.WriteLine(e.Message);
-
                     Console.WriteLine("Instructed executed. Press Enter to continue... ");
                     Console.ReadLine();
                 }
-               
-
-
             }
             while (choice != 4);
         }
 
-        static void ValidateName(string name)
+        /// <summary>
+        /// Validates the menu choice, if valid returns the number
+        /// otherwise, throw a custom Exception
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns>validated menu choice</returns>
+        /// <exception cref="InvalidDataException"></exception>
+        static int ValidateMenuChoice(string input)
         {
-            if (string.IsNullOrWhiteSpace(name))
+            if (!int.TryParse(input, out int validChoice))
             {
-                throw new FormatException("Name must start with an uppercase letter.");
+                throw new InvalidDataException($"Invalid Input. Please enter a number");
             }
 
-            if (!char.IsUpper(name[0]))
-            {
-
-                throw new FormatException("Name must start with an uppercase letter.");
-            }
-
-            if (Regex.IsMatch(name, @"\d"))
-            {
-                throw new FormatException("Name must start with an uppercase letter.");
-            }
+            return validChoice;
         }
 
-        static int ValidateInt(string input)
+       /// <summary>
+       /// Validates the name based on the provided conditions
+       /// </summary>
+       /// <returns>validated name</returns>
+        static string ValidateName()
         {
-            if(!int.TryParse(input, out int validInt))
-            {
-                throw new FormatException($"Invalid Input. Please enter a number");
-            }
+            bool isValidName = false;
+            string name = "";
+            string errorMessage = "Name error: Name must start with an uppercase letter.";
 
-            return validInt;
+            while (!isValidName)
+            {
+
+                Console.Write("Enter student name: ");
+
+                name = Console.ReadLine();
+                
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    Console.WriteLine(errorMessage);
+                }
+                else if (!char.IsUpper(name[0]))
+                {
+                    Console.WriteLine(errorMessage);
+                }
+                else
+                {
+                    isValidName = true;
+                }               
+            }
+            
+            return name;
         }
 
-        static double ValidateDoule(string input)
+
+        static int ValidateAge()
         {
-            if (!double.TryParse(input, out double validDouble))
+            bool isValidAge = false;
+            int validAge = 0;
+
+            while(!isValidAge)
             {
-                throw new FormatException($"Invalid Input. Please enter a number");
+                Console.Write("Enter student age: ");
+                if(!int.TryParse(Console.ReadLine(), out validAge))
+                {
+                    Console.WriteLine("Age must be a number.");
+                }
+                else
+                {
+                    if(validAge >= 0 && validAge < 18)
+                    {
+                        Console.WriteLine("Validation error: Age must be at least 18.");
+                    }
+                    else if(validAge < 0)
+                    {
+                        Console.WriteLine("Validation error: Age cannot be negative.");
+                    }
+                    else if(validAge > 65)
+                    {
+                        Console.WriteLine("Validation error: Age canot be more than 65.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Instructed executed. Press Enter to continue...");
+                        Console.ReadLine();
+
+                        isValidAge = true;
+                    }                    
+                }
+            }
+            return validAge;
+        }
+
+        static int FindStudentIndex(List<Student> studentsList)
+        {
+            int studentIndex = 0;
+            string studentName = "";
+            
+            studentName = ValidateName();
+
+            Student student = studentsList.FirstOrDefault(s => s.Name == studentName);
+            
+            if(student == null)
+            {
+                throw new InvalidDataException($"Student {studentName} not found");
+            }
+            else
+            {
+                studentIndex = studentsList.IndexOf(student);
             }
 
-            return validDouble;
+            return studentIndex;
+        }
+
+        static double ValidateGrade()
+        {
+            bool isValidGrade = false;
+
+            double validGrade = 0;
+
+            while(!isValidGrade)
+            {
+                Console.Write("Enter student grade: ");
+
+                if (!double.TryParse(Console.ReadLine(), out validGrade))
+                {
+                    Console.WriteLine($"Validation error: Input string was not in a correct format. ");
+                }
+                else
+                {
+                    if (validGrade < 0 || validGrade > 100)
+                    {
+                        Console.WriteLine("Validation error: Grade must be between 0 and 100.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Instructed executed. Press Enter to continue...");
+                        Console.ReadLine();
+
+                        isValidGrade = true;
+                    }
+                }
+            }            
+            return validGrade;
         }
 
 
