@@ -8,12 +8,22 @@ namespace Assessment_1
 {
     public class Skill
     {
+        private string _name;
+        private string _description;
+        private string _attribute;
+        public int _requiredAttributePoints;
+
+        //Default constructor
+        public Skill() { }
+
         public string Name { get; set; }
         public string Description { get; set; }
         public string Attribute { get; set; }
         public int RequiredAttributePoints { get; set; }
 
-        // Constructor
+       
+
+        // Greedy constructor
         public Skill(string name, string description, string attribute, int requiredAttributePoints)
         {
             Name = name;
@@ -24,7 +34,7 @@ namespace Assessment_1
        
         public override string ToString()
         {
-            return $"{Name}: {Description} (Attribute: {Attribute}, Required Points: {RequiredAttributePoints})";
+            return $"{Name} - {Description} - {Attribute} - Point Requirments: {RequiredAttributePoints})";
         }
     }
 }
