@@ -50,7 +50,6 @@ namespace Assessment_1
             {
                 DisplayMainMenu();
 
-
                 Console.Write("\nEnter your choice: ");
                 mainMenuOption = Console.ReadLine();
 
@@ -128,7 +127,6 @@ namespace Assessment_1
                     isValidName = true;
                 }
             }
-
             return characterName;
         }
 
@@ -155,7 +153,6 @@ namespace Assessment_1
                     isValidClass = true;
                 }
             }
-
             return characterClass;
         }
 
@@ -183,7 +180,6 @@ namespace Assessment_1
                     {
                         isValidInput = true;
                     }
-
                 }
                 else
                 {                    
@@ -196,6 +192,10 @@ namespace Assessment_1
         #endregion
 
         #region Menu Option 2
+
+        /// <summary>
+        /// Assigns the skills to the character as per requirments
+        /// </summary>
         static void AssignSkills()
         {
             List<Skill> skills = new List<Skill>
@@ -205,6 +205,9 @@ namespace Assessment_1
                 new Skill { Name = "Spellcast", Description = "Cast a spell.", Attribute = "Intelligence", RequiredAttributePoints=20 }
             };
 
+            bool isValidCharacter = false;
+            int skillIndex = 0;
+             
             if (characters.Count == 0)
             {
                 Console.Write("There are no available characters");
@@ -212,21 +215,42 @@ namespace Assessment_1
             }
             else
             {
-                //TODO: revise logic below because if there is no character,
-                //it returns to the main menu
-                Character character = FindCharacter();
-                if (character == null)
-                {                    
-                    Console.ReadLine();
-                }
-                else
+                while(!isValidCharacter)
                 {
-                    int characterAttributePoints = character.AvailableAttributePoints;
-                    Console.WriteLine($"\nTotal Attribute Points Available for this character: {characterAttributePoints} ");
-                    Console.WriteLine("Available skills: ");
-                    DisplayAvailableSkills(skills);
-                    Console.ReadLine();
-                }
+                    //TODO: revise logic below because if there is no character,
+                    //it returns to the main menu
+                    Character character = FindCharacter();
+                    if (character == null)
+                    {
+                        Console.Write("Try again . . .");
+
+                        Console.ReadLine();
+                    }
+                    else
+                    {
+                        int characterAttributePoints = character.AvailableAttributePoints;
+                        Console.WriteLine($"\nTotal Attribute Points Available for this character: {characterAttributePoints} ");
+                        Console.WriteLine("Available skills: ");
+
+                        DisplayAvailableSkills(skills);
+                        skillIndex = RequestSkill(characterAttributePoints);
+                        Skill chosenSkill = skills.ElementAt(skillIndex -1);
+                        
+                        if(!ValidateSkill(chosenSkill, characterAttributePoints))
+                        {
+                            Console.WriteLine("Not enough attribute points are available!");
+                        }
+                        else
+                        {
+                            character._skills.Add(chosenSkill);
+                        }
+
+                        Console.ReadLine();
+
+                        isValidCharacter = true;
+                    }
+
+                }                
             }
         }
 
@@ -245,28 +269,79 @@ namespace Assessment_1
             {
                 Console.WriteLine($"No character with the name {characterName} was found");
             }
-
             return character;
         }
 
+        /// <summary>
+        /// Display a list of available skills from where the user
+        /// can choose a option
+        /// </summary>
+        /// <param name="skillsList"></param>
         static void DisplayAvailableSkills(List<Skill> skillsList)
         {
             int skillCounter = 1;
-
             foreach (Skill skill in skillsList)
             {
-                Console.WriteLine($"{skillCounter}. {skill.ToString()} + \n");
+                Console.WriteLine($"{skillCounter}. {skill.ToString()}  ");
                 skillCounter++;
             }
-            Console.ReadLine();
+        }
+
+        /// <summary>
+        /// Requests and validatest the skill choice
+        /// </summary>
+        /// <param name="attributePoints"></param>
+        /// <returns>Validated skill choice</returns>
+        static int RequestSkill(int attributePoints)
+        {
+            bool isValidInput = false;
+            int skillNumber = 0;
+
+            Console.Write("Select a skill to assign: ");
+            while (!isValidInput)
+            { 
+                if (int.TryParse(Console.ReadLine(), out skillNumber))
+                {
+                    if (skillNumber <= 0 || skillNumber > 3)
+                    {
+                        Console.Write("Invalid selection. Please enter a number in range (1..3): ");
+                    }
+                    else
+                    {                       
+                        isValidInput = true;
+                    }
+                }
+                else
+                {
+                    Console.Write("Invalid selection. Please enter a number in range (1..3): ");
+                }
+            }
+            return skillNumber;
+        }
+
+        /// <summary>
+        /// Validates if the the chosen skill can be acquired 
+        /// </summary>
+        /// <param name="skill"></param>
+        /// <param name="attributePoints"></param>
+        /// <returns></returns>
+        static bool ValidateSkill(Skill skill, int attributePoints)
+        {
+            return skill.RequiredAttributePoints > attributePoints ? false : true;  
         }
 
         #endregion
 
         #region Menu Option 3
+
+
         #endregion
 
         #region Menu Option 4
+
+        /// <summary>
+        /// Display the avalaible characters sheet
+        /// </summary>
         static void DisplayCharacterSheets()
         {
             if (!characters.Any())
@@ -276,6 +351,7 @@ namespace Assessment_1
             }
             else
             {
+                Console.WriteLine("All Characters in the character sheet.......................");
                 foreach (Character character in characters)
                 {
                     Console.WriteLine(character.ToString() + "\n");                    

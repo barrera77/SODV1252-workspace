@@ -11,7 +11,7 @@ namespace Assessment_1
         private string _name;
         private string _description;
         private string _attribute;
-        public int _requiredAttributePoints;
+        private int _requiredAttributePoints;
 
         //Default constructor
         public Skill() { }

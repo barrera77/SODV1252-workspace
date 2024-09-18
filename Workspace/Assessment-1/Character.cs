@@ -13,7 +13,7 @@ namespace Assessment_1
         private int _level;
         private int _hitPoints;
         private int _availableAttributePoints;
-        private List<Skill> _skills;
+        public List<Skill> _skills;
 
         //Default constructor
         public Character()
@@ -110,14 +110,14 @@ namespace Assessment_1
             _hitPoints += 5;
         }
 
-        public int CalculateInitialHitPoints()
+        private int CalculateInitialHitPoints()
         {
             return 10 + AvailableAttributePoints / 2;
         }
 
         public override string ToString()
         {
-            string skillsList = _skills.Count > 0 ? string.Join("\n", _skills.Select(skill => skill.ToString())) : "Skills:\nThere are no skills assigned yet...!";
+            string skillsList = _skills.Count > 0 ? string.Concat("Skills:\n" + _skills.Select(skill => skill.ToString())) : "Skills:\nThere are no skills assigned yet...!";
 
             return $"Name: {Name}, Class: {Class}, Level: {Level}, Hitpoints: {HitPoints}, Available Attribute Points: {AvailableAttributePoints}, \n{skillsList}";
         }
