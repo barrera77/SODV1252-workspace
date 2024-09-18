@@ -247,14 +247,16 @@ namespace Assessment_1
                         else
                         {
                             character._skills.Add(chosenSkill);
+
+                            //Update attribute points
+                            character.AvailableAttributePoints = characterAttributePoints - chosenSkill.RequiredAttributePoints;
                         }
 
                         Console.ReadLine();
 
                         isValidCharacter = true;
                     }
-
-                }                
+                }               
             }
         }
 
@@ -362,12 +364,14 @@ namespace Assessment_1
                     }
                     else
                     {
+                        character.LevelUp();
+                        Console.Write($"{character.Name} is now a Level:{character.Level} character");
+                        Console.ReadLine();
 
                     }
-
+                    isValidCharacter = true;
                 }
             }
-
         }
 
         #endregion
@@ -391,7 +395,9 @@ namespace Assessment_1
                 {
                     Console.WriteLine(character.ToString() + "\n");                    
                 }
+                Console.WriteLine("End.........................................................");
                 Console.ReadLine();
+
             }
         }
         #endregion

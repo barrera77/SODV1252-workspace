@@ -85,7 +85,6 @@ namespace Assessment_1
                     throw new ArgumentException("Invalid input, please provide a positive integer for the attribute points");
                 }
                 _availableAttributePoints = value;
-                _hitPoints = CalculateInitialHitPoints();
             }
         }     
 
@@ -110,6 +109,10 @@ namespace Assessment_1
             _hitPoints += 5;
         }
 
+        /// <summary>
+        /// Calculates the initial hitpoints for the character
+        /// </summary>
+        /// <returns></returns>
         private int CalculateInitialHitPoints()
         {
             return 10 + AvailableAttributePoints / 2;
@@ -117,7 +120,7 @@ namespace Assessment_1
 
         public override string ToString()
         {
-            string skillsList = _skills.Count > 0 ? string.Concat("Skills:\n" + _skills.Select(skill => skill.ToString())) : "Skills:\nThere are no skills assigned yet...!";
+            string skillsList = _skills.Count > 0 ? string.Join("Skills:\n", _skills.Select(skill => skill.ToString())) : "Skills:\nThere are no skills assigned yet...!";
 
             return $"Name: {Name}, Class: {Class}, Level: {Level}, Hitpoints: {HitPoints}, Available Attribute Points: {AvailableAttributePoints}, \n{skillsList}";
         }
