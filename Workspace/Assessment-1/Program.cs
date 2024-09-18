@@ -56,6 +56,7 @@ namespace Assessment_1
                 switch (mainMenuOption)
                 {
                     case "1":
+                        //Create a new character
                         try
                         {
                             Character newCharacter = CreateCharacter();
@@ -71,13 +72,17 @@ namespace Assessment_1
                         break;
 
                     case "2":
+                        //Assign skill to a character
                         AssignSkills();
                         break;
 
                     case "3":
+                        //level up character
+                        LevelUpCharacter();
                         break;
 
                     case "4":
+                        //Display available characters sheet
                         DisplayCharacterSheets();
                         break;
 
@@ -217,8 +222,7 @@ namespace Assessment_1
             {
                 while(!isValidCharacter)
                 {
-                    //TODO: revise logic below because if there is no character,
-                    //it returns to the main menu
+                    //look up if the provided character exists
                     Character character = FindCharacter();
                     if (character == null)
                     {
@@ -334,6 +338,37 @@ namespace Assessment_1
 
         #region Menu Option 3
 
+        static void LevelUpCharacter()
+        {
+            bool isValidCharacter = false;
+            
+
+            if (characters.Count == 0)
+            {
+                Console.Write("There are no available characters");
+                Console.ReadLine();
+            }
+            else
+            {
+                while (!isValidCharacter)
+                {
+                    //look up if the provided character exists
+                    Character character = FindCharacter();
+                    if (character == null)
+                    {
+                        Console.Write("Try again . . .");
+
+                        Console.ReadLine();
+                    }
+                    else
+                    {
+
+                    }
+
+                }
+            }
+
+        }
 
         #endregion
 
