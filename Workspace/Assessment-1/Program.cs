@@ -10,18 +10,12 @@ namespace Assessment_1
         public static List<Character> characters = new List<Character>();
         
         static void Main(string[] args)
-        {
-            List<Skill> skills = new List<Skill>
-            {
-                new Skill { Name = "Strike", Description = "A powerful strike.", Attribute = "Strength", RequiredAttributePoints=10 },
-                new Skill { Name = "Dodge", Description = "Avoid an attack.", Attribute = "Dexterity", RequiredAttributePoints=15 },
-                new Skill { Name = "Spellcast", Description = "Cast a spell.", Attribute = "Intelligence", RequiredAttributePoints=20 }
-            };
-
-
+        { 
+            //Commence the sequence
             HandleMainMenu();
         }
 
+        #region Helper Methods
         /// <summary>
         /// Prints the main menu
         /// </summary>
@@ -98,6 +92,8 @@ namespace Assessment_1
             }
             while (mainMenuOption != "5");
         }
+
+        #endregion
 
         #region Menu Option 1
         static Character CreateCharacter()
