@@ -9,11 +9,11 @@ namespace FileAnalyzer
     internal class Sale
     {
         private string _productName;
-        private DateOnly _dateOfSale;
+        private DateTime _dateOfSale;
         private decimal _salesAmount;
 
         //Default Constructor
-
+        public Sale() { }
 
         //ProductName
         public string ProductName
@@ -33,7 +33,7 @@ namespace FileAnalyzer
         }
 
         //Date of Sale
-        public DateOnly DateOfSale
+        public DateTime DateOfSale
         { 
             get { return _dateOfSale; } 
             set
@@ -56,7 +56,7 @@ namespace FileAnalyzer
         }
 
         //Greedy Constructor
-        public Sale(string productName, DateOnly dateOfSale, decimal salesAmount)
+        public Sale(string productName, DateTime dateOfSale, decimal salesAmount)
         {
             ProductName = productName;
             DateOfSale = dateOfSale; ;
