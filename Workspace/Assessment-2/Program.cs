@@ -16,10 +16,11 @@ namespace Assessment_2
     {
         static void Main(string[] args)
         {
+            string story = GenerateStory();
             //TODO: FIgure a way to prompt the user for input and then for file 
             //name to save the file. (may need to revise GetInputs method)
             string fileName = ValidateInput("Enter a filename to save your story:", "file name");
-            SaveStory(fileName);
+            SaveStory(fileName, story);
         }
 
         /// <summary>
@@ -82,37 +83,38 @@ namespace Assessment_2
             string[] completedStory = new string[storyTemplate.Length];
             Dictionary<string, string> inputs = GetUserInputs();
 
-            string newStory = "";
+            StringBuilder newStory = new StringBuilder();
 
-            for (int i = 0; i < storyTemplate.Length; i++)
+            foreach (string storyLine in storyTemplate)
             {
-                string line = storyTemplate[i];
+                string processedStoryLine = storyLine;
 
                 foreach (var input in inputs)
                 {
-                    line = line.Replace("{" + input.Key + "}", input.Value); ;
+                    processedStoryLine = processedStoryLine.Replace("{" + input.Key + "}", input.Value); ;
 
                 }
-                completedStory[i] = line;
+                newStory.AppendLine(processedStoryLine);
+                //Console.WriteLine(processedStoryLine);
             }
 
-            foreach (var line in completedStory)
-            {
-                newStory.Concat(line);
-                Console.WriteLine(line);
-            }
-
-            return newStory;
+            return newStory.ToString();
         }
              
-        static void SaveStory(string fileName)
-        {
-            string directoryPath = Directory.GetCurrentDirectory();
+        /// <summary>
+        /// Get the story and save it to a new file
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="story"></param>
+        static void SaveStory(string fileName, string story)
+        {            
+            string directoryPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\"));
             string filePath = Path.Combine(directoryPath, fileName);
 
-            string story = GenerateStory();            
-
             File.WriteAllText(filePath, story);
+
+            Console.WriteLine($"The story was succesfully saved to {filePath}");
+            Console.ReadLine();
             
         }
 
@@ -153,7 +155,6 @@ namespace Assessment_2
                 return input;
             }
 
-            #endregion
-        
+            #endregion        
     }
 }

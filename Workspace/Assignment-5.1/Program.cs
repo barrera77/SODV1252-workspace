@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            // Task 1: Create instances of the 'Book' class
+            // Task 1: Writing and Using Constructors
             Console.WriteLine("Using Default Constructor: ");
             Book defaultBook = new Book();
             Console.WriteLine(defaultBook);
@@ -20,7 +20,7 @@
             Console.WriteLine(parameterizedBook);
 
 
-            // Task 2: Create an instance of the 'Student' class using object initializer syntax
+            // Task 2: Object Initialization with Initializer Syntax
 
             Console.WriteLine("Enter student name: ");
             string name = Console.ReadLine();
@@ -28,8 +28,7 @@
             int age = int.Parse(Console.ReadLine());
             Console.WriteLine("Enter student major: ");
             string major = Console.ReadLine();
-            //ToDo
-            //Replace the following line and create a student object...
+
             Student student = new Student()
             {
                 Name = name,

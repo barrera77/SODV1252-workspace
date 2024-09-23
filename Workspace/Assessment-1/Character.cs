@@ -94,8 +94,8 @@ namespace Assessment_1
             Name = name;
             Class = CharacterClass;
             _level = 1;
-            _hitPoints = CalculateInitialHitPoints();
             AvailableAttributePoints = availableAttributePoints;
+            _hitPoints = CalculateInitialHitPoints();
             _skills = new List<Skill>();
         }
 
@@ -112,10 +112,10 @@ namespace Assessment_1
         /// <summary>
         /// Calculates the initial hitpoints for the character
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Initial hitpoints</returns>
         private int CalculateInitialHitPoints()
         {
-            return 10 + AvailableAttributePoints / 2;
+            return (10 + AvailableAttributePoints) / 2;
         }
 
         public override string ToString()

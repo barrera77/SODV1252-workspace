@@ -243,7 +243,7 @@ namespace Assessment_1
                         else
                         {
                             character._skills.Add(chosenSkill);
-
+                            Console.WriteLine($"Skill: {chosenSkill.Name} added to {character.Name}");
                             //Update attribute points
                             character.AvailableAttributePoints = characterAttributePoints - chosenSkill.RequiredAttributePoints;
                         }
