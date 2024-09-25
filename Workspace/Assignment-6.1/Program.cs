@@ -225,7 +225,7 @@ namespace Assignment_6._1
 
     }
 
-    //helper class for custom exceptions
+    //Helper class for custom exceptions
     public class InvalidDataException : Exception
     {
         public InvalidDataException(string message) : base(message)

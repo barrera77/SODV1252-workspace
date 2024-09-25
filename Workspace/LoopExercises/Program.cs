@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            int n = 6;
+            int n = 5;
 
             //left triangle
             //for (int i = 1; i <= n; i++)
@@ -122,6 +122,21 @@
             //    Console.WriteLine();
 
             //}
+
+
+            //Exercise
+            for (int i = 1; i <= n; i++)
+            {
+                for (int j = 1; j <= n - i + 1; j++)
+                {
+                    char symbol = (i % 2 == 0) ? '*' : '$';
+                    Console.Write(symbol);
+                }
+                Console.WriteLine();    
+            }
+
+
+
         }
     }
 }
