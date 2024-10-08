@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FileAnalyzer
 {
-    internal class Sale
+    public class Sale 
     {
         private string _productName;
         private DateTime _dateOfSale;
@@ -63,7 +63,6 @@ namespace FileAnalyzer
             SalesAmount = salesAmount;
         }
 
-
-
+        
     }
 }

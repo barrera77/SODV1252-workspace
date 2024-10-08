@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Xml;
 
 namespace FileAnalyzer
 {
     internal class Program
     {
+
+        private static List<Sale> SalesByProduct = new List<Sale>();
+        private static List<Sale> SalesByMonth = new List<Sale>();
+
         static void Main(string[] args)
         {
             string fileName = "sales.txt";
@@ -14,12 +19,20 @@ namespace FileAnalyzer
             List<Sale> sales = ReadSalesData(filePath);
 
             DisplayTotalSalesByProduct(sales, "title");
+            DisplayTotalSalesByMonth(sales, "title");
 
 
 
         }
 
         #region Main Tasks
+
+        /// <summary>
+        /// Read the info from the file and format it into a list
+        /// for further processing
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
         static List<Sale> ReadSalesData(string file)
         {
             List<Sale> sales = new List<Sale>();
@@ -44,31 +57,58 @@ namespace FileAnalyzer
             catch (IOException e)
             {
                 Console.WriteLine(e.Message);
-            }
-
-            foreach (Sale sale in sales)
-            {
-                Console.WriteLine(sale.ProductName + ", " + sale.DateOfSale + ", " + sale.SalesAmount);
-            }
+            }     
 
             return sales;
         }
 
+        /// <summary>
+        /// Sort the sales by product name and compute the total sales
+        /// for each product
+        /// </summary>
+        /// <param name="sales"></param>
+        /// <param name="title"></param>
         static void DisplayTotalSalesByProduct(List<Sale> sales, string title)
         {
-            List<Sale> salesByProduct =  sales;
-            salesByProduct.Sort();
-            salesByProduct.Reverse();
+            SalesByProduct = sales.GroupBy(s => s.ProductName)
+                                            .Select(salesGroup => new Sale
+                                            {
+                                                ProductName = salesGroup.Key,
+                                                SalesAmount = salesGroup.Sum(sg => sg.SalesAmount)
 
-            foreach(Sale sale in salesByProduct)
+                                            })
+                                            .OrderByDescending(ps => ps.SalesAmount)
+                                            .ToList();
+
+            Console.WriteLine("Total sales by Product: ");
+            foreach (Sale sale in SalesByProduct)
             {
-                Console.WriteLine(sale.ProductName + ", " + sale.DateOfSale + ", " + sale.SalesAmount);
+                Console.WriteLine($"{sale.ProductName}: ${sale.SalesAmount}");
             }
-
         }
 
+        /// <summary>
+        /// Sort the sales by month and compute the total sales
+        /// for each product
+        /// </summary>
+        /// <param name="sales"></param>
+        /// <param name="title"></param>
         static void DisplayTotalSalesByMonth(List<Sale> sales, string title)
         {
+            SalesByMonth = sales.GroupBy(s => s.DateOfSale.Month)
+                                                        .Select(salesGroup => new Sale
+                                                        {
+                                                            ProductName = GetMonthOfTheYear(salesGroup.Key),
+                                                            SalesAmount = salesGroup.Sum(sg => sg.SalesAmount)
+                                                        })
+                                                        .OrderByDescending(ps => ps.SalesAmount)
+                                                        .ToList();
+
+            Console.WriteLine("\n\n\nTotal sales by Month: ");
+            foreach (Sale sale in SalesByMonth)
+            {
+                Console.WriteLine($"{sale.ProductName}: ${sale.SalesAmount}");
+            }
 
         }
 
@@ -116,6 +156,11 @@ namespace FileAnalyzer
             return input;
         }
 
+        /// <summary>
+        /// Format the file lines into Sale objects
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
         static Sale ParseFileLines(string line)
         {
             string[] parts = line.Split(",");
@@ -137,6 +182,25 @@ namespace FileAnalyzer
             return sale;
         }
 
+        /// <summary>
+        /// Obtain the name of the month based on numeric value from the
+        /// DateOfSale property
+        /// </summary>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        static string GetMonthOfTheYear(int month)
+        {
+            DateTime date = new DateTime(2024, month, 1);
+            return date.ToString("MMMM");
+        }
+
+        
+        static void SearchSalesData(List<Sale> sales)
+        {
+            Console.Write("Enter search strings separated by commas: ");
+
+            
+        }
        
 
         #endregion
