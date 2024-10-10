@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Xml;
 
 namespace FileAnalyzer
@@ -7,21 +9,12 @@ namespace FileAnalyzer
     internal class Program
     {
 
-        private static List<Sale> SalesByProduct = new List<Sale>();
-        private static List<Sale> SalesByMonth = new List<Sale>();
-
+        static private List<KeyValuePair<string, decimal>> salesByProductList;
+        static private List<KeyValuePair<string, decimal>> salesByMonthList;
+        //static private List<Sale> sales;
         static void Main(string[] args)
         {
-            string fileName = "sales.txt";
-            string directoryPath = Directory.GetCurrentDirectory();
-            string filePath = Path.Combine(directoryPath, fileName);
-          
-            List<Sale> sales = ReadSalesData(filePath);
-
-            DisplayTotalSalesByProduct(sales, "title");
-            DisplayTotalSalesByMonth(sales, "title");
-
-
+            GetAndProcessUserInput();
 
         }
 
@@ -70,21 +63,44 @@ namespace FileAnalyzer
         /// <param name="title"></param>
         static void DisplayTotalSalesByProduct(List<Sale> sales, string title)
         {
-            SalesByProduct = sales.GroupBy(s => s.ProductName)
-                                            .Select(salesGroup => new Sale
-                                            {
-                                                ProductName = salesGroup.Key,
-                                                SalesAmount = salesGroup.Sum(sg => sg.SalesAmount)
+            Dictionary<string, decimal> salesByProduct = new Dictionary<string, decimal>();
 
-                                            })
-                                            .OrderByDescending(ps => ps.SalesAmount)
-                                            .ToList();
+            decimal totalSales = 0;
 
-            Console.WriteLine("Total sales by Product: ");
-            foreach (Sale sale in SalesByProduct)
+            foreach (var sale in sales)
             {
-                Console.WriteLine($"{sale.ProductName}: ${sale.SalesAmount}");
+                if (salesByProduct.ContainsKey(sale.ProductName))
+                {
+                    salesByProduct[sale.ProductName] += sale.SalesAmount;
+                }
+                else
+                {
+                    salesByProduct.Add(sale.ProductName, sale.SalesAmount);
+                }
+
+                totalSales += sale.SalesAmount;
             }
+
+            salesByProductList = new List<KeyValuePair<string, decimal>>(salesByProduct);
+
+            for (int i = 0; i < salesByProductList.Count - 1; i++)
+            {
+                for (int j = 0; j < salesByProductList.Count - 1 - i; j++)
+                {
+                    if (salesByProductList[j].Value < salesByProductList[j + 1].Value)
+                    {
+                        var temp = salesByProductList[j];
+                        salesByProductList[j] = salesByProductList[j + 1];
+                        salesByProductList[j + 1] = temp;
+                    }
+                }
+            }
+
+            Console.WriteLine($"\n\n{title}");
+            foreach (var kvp in salesByProductList)
+            {
+                Console.WriteLine($"\n{kvp.Key}: {kvp.Value}");
+            }           
         }
 
         /// <summary>
@@ -95,25 +111,24 @@ namespace FileAnalyzer
         /// <param name="title"></param>
         static void DisplayTotalSalesByMonth(List<Sale> sales, string title)
         {
-            SalesByMonth = sales.GroupBy(s => s.DateOfSale.Month)
-                                                        .Select(salesGroup => new Sale
-                                                        {
-                                                            ProductName = GetMonthOfTheYear(salesGroup.Key),
-                                                            SalesAmount = salesGroup.Sum(sg => sg.SalesAmount)
-                                                        })
-                                                        .OrderByDescending(ps => ps.SalesAmount)
-                                                        .ToList();
-
-            Console.WriteLine("\n\n\nTotal sales by Month: ");
-            foreach (Sale sale in SalesByMonth)
-            {
-                Console.WriteLine($"{sale.ProductName}: ${sale.SalesAmount}");
-            }
-
+            Console.WriteLine($"\n\n{title}");
+            SortSalesByDate(sales);
         }
 
         static void WriteSalesData(List<Sale> sales, string file)
         {
+
+            //Products Information:
+            //foreach (var sale in sales)
+            //{
+            //    foreach (var criteria in searchCriteria)
+            //    {
+            //        if (sale.ProductName.Contains(criteria))
+            //        {
+            //            Console.WriteLine($"\n{GetMonthOfTheYear(sale.DateOfSale.Month)}: {sale.SalesAmount}");
+            //        }
+            //    }
+            //}
 
         }
 
@@ -132,7 +147,7 @@ namespace FileAnalyzer
         /// <param name="prompt"></param>
         /// <param name="element"></param>
         /// <returns>validated input</returns>
-        static string ValidateInput(string prompt, string element)
+        static string ValidateInput(string prompt)
         {
             bool isValidInput = false;
             string input = "";
@@ -141,12 +156,11 @@ namespace FileAnalyzer
 
             while (!isValidInput)
             {
-
                 input = Console.ReadLine();
 
                 if (string.IsNullOrWhiteSpace(input))
                 {
-                    Console.Write($"Invalid input. Please enter a valid {element}:");
+                    Console.Write($"Invalid input. Please enter a valid search criteria:");
                 }
                 else
                 {
@@ -175,7 +189,6 @@ namespace FileAnalyzer
                     ProductName = parts[0].Trim(),
                     DateOfSale = date,
                     SalesAmount = amount,
-
                 };
             }
 
@@ -196,12 +209,107 @@ namespace FileAnalyzer
 
         
         static void SearchSalesData(List<Sale> sales)
-        {
-            Console.Write("Enter search strings separated by commas: ");
+        {             
+            string input = ValidateInput("\n\nEnter search strings separated by commas: ");
 
-            
+            string[] searchCriteria = input.Split(", ");
+                        
+            Console.WriteLine("\n\nTotal sales by Filtered product:");
+
+            //Find the sales by product as per search criteria
+            foreach (var kvp in salesByProductList)
+            {
+                foreach (var criteria in searchCriteria)
+                {
+                    if (kvp.Key.Contains(criteria))
+                    {
+                        Console.WriteLine($"\n{kvp.Key}: {kvp.Value}");
+                    }
+                }
+            }
+            List<Sale> filteredSales = new List<Sale>();
+
+            //Sales Filtered by product and groupped by Month
+            foreach (var sale in sales)
+            {
+                foreach (var criteria in searchCriteria)
+                {
+                    if (sale.ProductName.Contains(criteria))
+                    {
+                        filteredSales.Add(sale);
+                    }                   
+                }
+            }
+
+            Console.WriteLine("\n\nTotal sales by Filtered product group by Month:");
+            SortSalesByDate(filteredSales);
+
         }
-       
+
+        static void SortSalesByDate(List<Sale> salesList)
+        {
+
+            Dictionary<string, decimal> salesByProduct = new Dictionary<string, decimal>();
+            decimal totalSales = 0;
+
+            foreach (var sale in salesList)
+            {
+                if (salesByProduct.ContainsKey(sale.DateOfSale.Month.ToString()))
+                {
+                    salesByProduct[sale.DateOfSale.Month.ToString()] += sale.SalesAmount;
+                }
+                else
+                {
+                    salesByProduct.Add(sale.DateOfSale.Month.ToString(), sale.SalesAmount);
+                }
+
+                totalSales += sale.SalesAmount;
+            }
+
+            List<KeyValuePair<string, decimal>> groupedSalesList = new List<KeyValuePair<string, decimal>>(salesByProduct);
+
+            for (int i = 0; i < groupedSalesList.Count - 1; i++)
+            {
+                for (int j = 0; j < groupedSalesList.Count - 1 - i; j++)
+                {
+                    if (groupedSalesList[j].Value < groupedSalesList[j + 1].Value)
+                    {
+                        var temp = groupedSalesList[j];
+                        groupedSalesList[j] = groupedSalesList[j + 1];
+                        groupedSalesList[j + 1] = temp;
+                    }
+                }
+            }
+
+            foreach (var vpk in groupedSalesList)
+            {
+                Console.WriteLine($"\n{GetMonthOfTheYear(Int32.Parse(vpk.Key))}: {vpk.Value}");
+            }
+        }
+
+        static void GetAndProcessUserInput()
+        {
+            Console.Write("Enter the input file path:");
+            string inputFileName = Console.ReadLine();
+
+            Console.Write("\nEnter the output file path:");
+            string outputFileName = Console.ReadLine();
+
+
+            //string fileName = "sales.txt";
+            string directoryPath = Directory.GetCurrentDirectory();
+            string inputFilePath = Path.Combine(directoryPath, inputFileName);
+            string outputFilePath = Path.Combine(directoryPath, outputFileName);
+            
+            List<Sale> sales = ReadSalesData(inputFilePath);
+
+            DisplayTotalSalesByProduct(sales, "Total sales by Product: ");
+            DisplayTotalSalesByMonth(sales, "Total sales by Month:");
+            SearchSalesData(sales);
+
+            Console.Write($"\n\nThe output is successfully saved to {outputFileName}.");
+            Console.ReadLine();
+        }
 
         #endregion
     }

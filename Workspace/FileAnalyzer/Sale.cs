@@ -47,7 +47,7 @@ namespace FileAnalyzer
             get { return _salesAmount; }
             set
             {
-                if(_salesAmount < 0)
+                if(value < 0)
                 {
                     throw new ArgumentException("Invalid input, please provide a valid amount");
                 }
@@ -63,6 +63,11 @@ namespace FileAnalyzer
             SalesAmount = salesAmount;
         }
 
-        
+        public override string ToString()
+        {
+            return $"{ProductName}, {DateOfSale.ToShortDateString()}, {SalesAmount:F2}";
+        }
+
+
     }
 }
