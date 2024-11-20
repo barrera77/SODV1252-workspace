@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Xml;
+﻿
 
 namespace FileAnalyzer
 {
@@ -115,22 +111,30 @@ namespace FileAnalyzer
             SortSalesByDate(sales);
         }
 
-        static void WriteSalesData(List<Sale> sales, string file)
-        {
+            static void WriteSalesData(List<Sale> sales, string file)
+            {
+            string projectDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+            string outputFilePath = Path.Combine(projectDirectory, file);
 
-            //Products Information:
-            //foreach (var sale in sales)
-            //{
-            //    foreach (var criteria in searchCriteria)
-            //    {
-            //        if (sale.ProductName.Contains(criteria))
-            //        {
-            //            Console.WriteLine($"\n{GetMonthOfTheYear(sale.DateOfSale.Month)}: {sale.SalesAmount}");
-            //        }
-            //    }
-            //}
-
-        }
+            Console.WriteLine(projectDirectory);
+            
+                try
+                {
+                    using (StreamWriter writer = new StreamWriter(outputFilePath))
+                    {
+                        foreach (var sale in sales)
+                        {
+                            // Write the data in the same format: ProductName, SaleDate, Amount
+                            string line = $"{sale.ProductName}, {sale.DateOfSale:MM/dd/yyyy}, {sale.SalesAmount:F2}";
+                            writer.WriteLine(line);
+                        }
+                    }
+                }
+                catch (IOException e)
+                {
+                    Console.WriteLine($"Error writing the file: {e.Message}");
+                }
+            }
 
         #endregion
 
@@ -248,7 +252,6 @@ namespace FileAnalyzer
 
         static void SortSalesByDate(List<Sale> salesList)
         {
-
             Dictionary<string, decimal> salesByProduct = new Dictionary<string, decimal>();
             decimal totalSales = 0;
 
@@ -289,26 +292,76 @@ namespace FileAnalyzer
 
         static void GetAndProcessUserInput()
         {
-            Console.Write("Enter the input file path:");
-            string inputFileName = Console.ReadLine();
+            string inputFileName = "";
+            string outputFileName = "";
+            bool isValidInputFile = true;
+            bool isValidOutputFile = true;
 
-            Console.Write("\nEnter the output file path:");
-            string outputFileName = Console.ReadLine();
+            while (isValidInputFile)
+            {
+                Console.Write("Enter the input file path:");
+                inputFileName = Console.ReadLine();
 
+                if (!IsValidFileInput(inputFileName))
+                {
+                    Console.WriteLine("Invalid file path. Please enter a valid path e.g. file.txt");
+                    
+                    continue;
+                }
+                else
+                {
+                    isValidInputFile = false;   
+                }   
 
-            //string fileName = "sales.txt";
-            string directoryPath = Directory.GetCurrentDirectory();
-            string inputFilePath = Path.Combine(directoryPath, inputFileName);
-            string outputFilePath = Path.Combine(directoryPath, outputFileName);
+                while (isValidOutputFile)
+                {
+                    Console.Write("\nEnter the output file path:");                    
+                    outputFileName = Console.ReadLine();
+
+                    if (!IsValidFileInput(outputFileName))
+                    {
+                        Console.WriteLine("Invalid file path. Please enter a valid path e.g. file.txt");
+                        continue;
+                    }
+                    else
+                    {
+                        isValidOutputFile = false;
+                    }                    
+                }
+                //string fileName = "sales.txt";
+                string directoryPath = Directory.GetCurrentDirectory();
+                string inputFilePath = Path.Combine(directoryPath, inputFileName);
+                string outputFilePath = Path.Combine(directoryPath, outputFileName);
+
+                List<Sale> sales = ReadSalesData(inputFilePath);
+
+                Console.WriteLine(sales);
+
+                DisplayTotalSalesByProduct(sales, "Total sales by Product: ");
+                DisplayTotalSalesByMonth(sales, "Total sales by Month:");
+                SearchSalesData(sales);
+
+                WriteSalesData(sales, outputFileName);
+
+                Console.Write($"\n\nThe output is successfully saved to {outputFileName}.");
+                Console.ReadLine();
+            }
+           
+        }
+
+        /// <summary>
+        /// validate the file name and extension entered by the user
+        /// </summary>
+        /// <param name="inputFileName"></param>
+        /// <returns></returns>
+        static bool IsValidFileInput(string inputFileName)
+        {            
+
+            string fileExtension = Path.GetExtension(inputFileName);
+
+            return fileExtension.Equals(".txt", StringComparison.OrdinalIgnoreCase) &&
+                inputFileName.IndexOfAny(Path.GetInvalidFileNameChars()) == -1;
             
-            List<Sale> sales = ReadSalesData(inputFilePath);
-
-            DisplayTotalSalesByProduct(sales, "Total sales by Product: ");
-            DisplayTotalSalesByMonth(sales, "Total sales by Month:");
-            SearchSalesData(sales);
-
-            Console.Write($"\n\nThe output is successfully saved to {outputFileName}.");
-            Console.ReadLine();
         }
 
         #endregion
