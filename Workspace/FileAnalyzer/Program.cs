@@ -4,14 +4,13 @@ namespace FileAnalyzer
 {
     internal class Program
     {
-
         static private List<KeyValuePair<string, decimal>> salesByProductList;
         static private List<KeyValuePair<string, decimal>> salesByMonthList;
+
         //static private List<Sale> sales;
         static void Main(string[] args)
         {
             GetAndProcessUserInput();
-
         }
 
         #region Main Tasks
@@ -114,9 +113,7 @@ namespace FileAnalyzer
         static void WriteSalesData(List<Sale> sales, string file)
         {
             string projectDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-            string outputFilePath = Path.Combine(projectDirectory, file);
-
-            Console.WriteLine(projectDirectory);
+            string outputFilePath = Path.Combine(projectDirectory, file);            
 
             List<string> salesFile = new List<string>();
             salesFile.Add("Products Information:");
@@ -152,17 +149,7 @@ namespace FileAnalyzer
                     foreach(var sale in salesFile)
                     {
                         writer.WriteLine(sale);
-                    }
-                    
-
-
-                    //foreach (var sale in sales)
-                    //{
-                    //    // Write the data in the same format: ProductName, SaleDate, Amount
-                    //    string line = $"{sale.ProductName}, {sale.DateOfSale:MM/dd/yyyy}, {sale.SalesAmount:F2}";
-                    //    //string line = sale.ToCustomString();
-                    //    writer.WriteLine(line);
-                    //}
+                    } 
                 }
             }
             catch (IOException e)
@@ -170,7 +157,6 @@ namespace FileAnalyzer
                 Console.WriteLine($"Error writing the file: {e.Message}");
             }
         }
-
 
 
         #endregion
@@ -254,9 +240,7 @@ namespace FileAnalyzer
             List<Sale> groupedSales = new List<Sale>();
 
             List<Sale> saleData = ReadSalesData(inputFile);
-            List<Sale> neededList = new List<Sale>();
-
-            
+            List<Sale> neededList = new List<Sale>();            
 
             Console.WriteLine("\n\nTotal sales by Filtered product:");
 
@@ -418,7 +402,6 @@ namespace FileAnalyzer
                         isValidOutputFile = false;
                     }                    
                 }
-
               
                 //string fileName = "sales.txt";
                 string directoryPath = Directory.GetCurrentDirectory();
@@ -500,10 +483,6 @@ namespace FileAnalyzer
         //    // Return the list of Sale objects (grouped by month and summed up)
         //    return groupedSalesList;
         //}
-
-
-
-
 
         #endregion
     }
