@@ -68,6 +68,15 @@ namespace FileAnalyzer
             return $"{ProductName}, {DateOfSale.ToShortDateString()}, {SalesAmount:F2}";
         }
 
+        
+        public string ToCustomString()
+        {
+            return $"{ProductName}: ${SalesAmount:F2}";
+        }
 
+        public string ToMonthSummaryString()
+        {
+            return $"{DateOfSale.ToString("MMMM")}: ${SalesAmount:F2}";
+        }
     }
 }

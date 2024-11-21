@@ -1,0 +1,20 @@
+Products Information:
+Product1, 01/01/2022, 100.00
+Product1, 01/03/2022, 150.00
+Product3, 01/05/2022, 300.00
+Product5, 02/02/2022, 500.00
+Product5, 02/04/2022, 550.00
+Product1, 01/01/2023, 50.00
+Product3, 03/09/2023, 150.00
+Product5, 06/08/2023, 150.00
+
+Total sales by Filtered product:
+Product5: $1200.00
+Product3: $450.00
+Product1: $300.00
+
+Total sales by Filtered product group by Month:
+February: $1050.00
+January: $600.00
+March: $150.00
+June: $150.00

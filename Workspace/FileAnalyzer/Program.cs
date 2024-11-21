@@ -111,39 +111,71 @@ namespace FileAnalyzer
             SortSalesByDate(sales);
         }
 
-            static void WriteSalesData(List<Sale> sales, string file)
-            {
+        static void WriteSalesData(List<Sale> sales, string file)
+        {
             string projectDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
             string outputFilePath = Path.Combine(projectDirectory, file);
 
             Console.WriteLine(projectDirectory);
-            
-                try
+
+            List<string> salesFile = new List<string>();
+            salesFile.Add("Products Information:");
+
+            for (int i = 0; i < 8 && i < sales.Count; i++)
+            {
+                Sale sale = sales[i];
+                string line = $"{sale.ProductName}, {sale.DateOfSale:MM/dd/yyyy}, {sale.SalesAmount:F2}";
+                salesFile.Add(line);
+            }
+
+            salesFile.Add("\nTotal sales by Filtered product:");
+
+            for (int i = 8; i < 11 && i < sales.Count; i++)
+            {
+                Sale sale = sales[i];
+                salesFile.Add(sale.ToCustomString());
+            }
+
+            salesFile.Add("\nTotal sales by Filtered product group by Month:");
+
+            for (int i = 11; i < 15 && i < sales.Count; i++)
+            {
+                Sale sale = sales[i];
+                salesFile.Add(sale.ToMonthSummaryString());
+                //salesFile.Add(sale.ToString());
+            }
+
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(outputFilePath))
                 {
-                    using (StreamWriter writer = new StreamWriter(outputFilePath))
+                    foreach(var sale in salesFile)
                     {
-                        foreach (var sale in sales)
-                        {
-                            // Write the data in the same format: ProductName, SaleDate, Amount
-                            string line = $"{sale.ProductName}, {sale.DateOfSale:MM/dd/yyyy}, {sale.SalesAmount:F2}";
-                            writer.WriteLine(line);
-                        }
+                        writer.WriteLine(sale);
                     }
-                }
-                catch (IOException e)
-                {
-                    Console.WriteLine($"Error writing the file: {e.Message}");
+                    
+
+
+                    //foreach (var sale in sales)
+                    //{
+                    //    // Write the data in the same format: ProductName, SaleDate, Amount
+                    //    string line = $"{sale.ProductName}, {sale.DateOfSale:MM/dd/yyyy}, {sale.SalesAmount:F2}";
+                    //    //string line = sale.ToCustomString();
+                    //    writer.WriteLine(line);
+                    //}
                 }
             }
+            catch (IOException e)
+            {
+                Console.WriteLine($"Error writing the file: {e.Message}");
+            }
+        }
+
+
 
         #endregion
 
         #region Helper Methods
-        //Validate file name
-        static bool IsValidFileName(string fileName)
-        {
-            return !String.IsNullOrWhiteSpace(fileName);
-        }
 
         /// <summary>
         /// Validates user input
@@ -212,26 +244,54 @@ namespace FileAnalyzer
         }
 
         
-        static void SearchSalesData(List<Sale> sales)
+        static List<Sale> SearchSalesData(List<Sale> sales, string inputFile, string outputFileName)
         {             
             string input = ValidateInput("\n\nEnter search strings separated by commas: ");
 
             string[] searchCriteria = input.Split(", ");
-                        
+            List<Sale> filteredSales = new List<Sale>();
+            List<Sale> salesListToWrite = new List<Sale>();
+            List<Sale> groupedSales = new List<Sale>();
+
+            List<Sale> saleData = ReadSalesData(inputFile);
+            List<Sale> neededList = new List<Sale>();
+
+            
+
             Console.WriteLine("\n\nTotal sales by Filtered product:");
+
+            foreach(var sale in saleData)
+            {
+                foreach (var criteria in searchCriteria)
+                {
+                    if(sale.ProductName.Contains(criteria))
+                    {
+                        neededList.Add(sale);
+                    }
+                }
+            }
 
             //Find the sales by product as per search criteria
             foreach (var kvp in salesByProductList)
             {
                 foreach (var criteria in searchCriteria)
                 {
+
                     if (kvp.Key.Contains(criteria))
                     {
-                        Console.WriteLine($"\n{kvp.Key}: {kvp.Value}");
+                        var sale = new Sale
+                        {
+                            ProductName = kvp.Key,
+                            SalesAmount = kvp.Value  // Assuming `kvp.Value` is the sales amount or related data
+                        };
+
+                        // Add the Sale object to the list
+                        salesListToWrite.Add(sale);
+
+                        Console.WriteLine($"\n{kvp.Key}: ${kvp.Value}");
                     }
                 }
             }
-            List<Sale> filteredSales = new List<Sale>();
 
             //Sales Filtered by product and groupped by Month
             foreach (var sale in sales)
@@ -245,12 +305,23 @@ namespace FileAnalyzer
                 }
             }
 
+            foreach (var sale in salesListToWrite)
+            {
+                filteredSales.Add(sale);
+            }
+
             Console.WriteLine("\n\nTotal sales by Filtered product group by Month:");
-            SortSalesByDate(filteredSales);
+            groupedSales = SortSalesByDate(neededList);
 
+            foreach(var sale in groupedSales)
+            {
+                filteredSales.Add(sale);
+            }
+           
+            return filteredSales;
         }
-
-        static void SortSalesByDate(List<Sale> salesList)
+        
+        static List<Sale> SortSalesByDate(List<Sale> salesList)
         {
             Dictionary<string, decimal> salesByProduct = new Dictionary<string, decimal>();
             decimal totalSales = 0;
@@ -284,10 +355,29 @@ namespace FileAnalyzer
                 }
             }
 
+            List<Sale> salesFromGroupedList = new List<Sale>();
+
             foreach (var vpk in groupedSalesList)
             {
-                Console.WriteLine($"\n{GetMonthOfTheYear(Int32.Parse(vpk.Key))}: {vpk.Value}");
+                // Convert month key to a DateTime 
+                int month = Int32.Parse(vpk.Key);
+                DateTime saleDate = new DateTime(DateTime.Now.Year, month, 1);
+
+                // Create a new Sale object
+                Sale sale = new Sale
+                {
+                    ProductName = "Grouped Sales",
+                    DateOfSale = saleDate,
+                    SalesAmount = vpk.Value
+                };
+
+                // Add to the list
+                salesFromGroupedList.Add(sale);
+
+                Console.WriteLine($"\n{GetMonthOfTheYear(Int32.Parse(vpk.Key))}: ${vpk.Value}");
             }
+
+            return salesFromGroupedList;
         }
 
         static void GetAndProcessUserInput()
@@ -328,6 +418,8 @@ namespace FileAnalyzer
                         isValidOutputFile = false;
                     }                    
                 }
+
+              
                 //string fileName = "sales.txt";
                 string directoryPath = Directory.GetCurrentDirectory();
                 string inputFilePath = Path.Combine(directoryPath, inputFileName);
@@ -335,13 +427,11 @@ namespace FileAnalyzer
 
                 List<Sale> sales = ReadSalesData(inputFilePath);
 
-                Console.WriteLine(sales);
-
                 DisplayTotalSalesByProduct(sales, "Total sales by Product: ");
                 DisplayTotalSalesByMonth(sales, "Total sales by Month:");
-                SearchSalesData(sales);
+                List<Sale> salesListToWrite = SearchSalesData(sales, inputFilePath, outputFilePath);
 
-                WriteSalesData(sales, outputFileName);
+                WriteSalesData(salesListToWrite, outputFileName);
 
                 Console.Write($"\n\nThe output is successfully saved to {outputFileName}.");
                 Console.ReadLine();
@@ -350,7 +440,7 @@ namespace FileAnalyzer
         }
 
         /// <summary>
-        /// validate the file name and extension entered by the user
+        /// validate the file name and extension entered by the user    
         /// </summary>
         /// <param name="inputFileName"></param>
         /// <returns></returns>
@@ -363,6 +453,57 @@ namespace FileAnalyzer
                 inputFileName.IndexOfAny(Path.GetInvalidFileNameChars()) == -1;
             
         }
+
+        //static List<Sale> GroupSalesByMonth(List<Sale> salesList)
+        //{
+        //    // Create a dictionary to store total sales for each month (key: Month, value: total sales)
+        //    Dictionary<int, decimal> salesByMonth = new Dictionary<int, decimal>();
+
+        //    // Group and sum sales by month (using numeric month format)
+        //    foreach (var sale in salesList)
+        //    {
+        //        int month = sale.DateOfSale.Month; // Extract the month (numeric value)
+
+        //        // Sum sales for the same month
+        //        if (salesByMonth.ContainsKey(month))
+        //        {
+        //            salesByMonth[month] += sale.SalesAmount; // Add the current sale to the total sales for the month
+        //        }
+        //        else
+        //        {
+        //            salesByMonth[month] = sale.SalesAmount; // Initialize the sales for the new month
+        //        }
+        //    }
+
+        //    // Convert the grouped sales back into Sale objects with the original date format
+        //    List<Sale> groupedSalesList = new List<Sale>();
+        //    foreach (var entry in salesByMonth)
+        //    {
+        //        // Find a sale to use the original date format
+        //        var firstSaleInMonth = salesList.FirstOrDefault(s => s.DateOfSale.Month == entry.Key);
+
+        //        if (firstSaleInMonth != null)
+        //        {
+        //            // Create a new Sale object with the total sales for that month
+        //            Sale sale = new Sale
+        //            {
+        //                ProductName = "Grouped Sales", // Placeholder product name
+        //                DateOfSale = firstSaleInMonth.DateOfSale, // Keep the original date format (using first sale's date)
+        //                SalesAmount = entry.Value // The total sales for the month
+        //            };
+
+        //            // Add the new Sale object to the list
+        //            groupedSalesList.Add(sale);
+        //        }
+        //    }
+
+        //    // Return the list of Sale objects (grouped by month and summed up)
+        //    return groupedSalesList;
+        //}
+
+
+
+
 
         #endregion
     }
